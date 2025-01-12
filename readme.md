@@ -1,3 +1,3 @@
 ### Solidity learn
 
-![](https://media.licdn.com/dms/image/v2/D5622AQGXmGlD-FEVjg/feedshare-shrink_2048_1536/feedshare-shrink_2048_1536/0/1727359799759?e=2147483647&v=beta&t=vB7koLKyqj6K3M5k16mYCchIxghaUlgsMejMrAlJxpY)
+![](https://memedepot.com/cdn-cgi/imagedelivery/naCPMwxXX46-hrE49eZovw/9bd737fc-d0a7-4b89-9583-395451847d00/public)
