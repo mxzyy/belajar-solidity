@@ -19,6 +19,17 @@ contract Array {
                 return array[i].public_key;
             }
         }
+        // if not found
         return address(0);
+    }
+
+    function getOwner(address _pubkey) public view returns (string memory owner) {
+        for (uint256 i = 0; i < array.length; i++) {
+            if ((array[i].public_key) == _pubkey) {
+                return array[i].owner;
+            }
+        }
+        // if not found
+        return "None";
     }
 }
