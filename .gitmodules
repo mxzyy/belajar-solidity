@@ -1,0 +1,3 @@
+[submodule "basics/hello-world/lib/forge-std"]
+	path = basics/hello-world/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
