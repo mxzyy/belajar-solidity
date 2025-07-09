@@ -4,3 +4,9 @@
 [submodule "basics/first-application/lib/forge-std"]
 	path = basics/first-application/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/primitive-data-types/lib/forge-std"]
+	path = basics/primitive-data-types/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/variables/lib/forge-std"]
+	path = basics/variables/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
