@@ -19,3 +19,9 @@
 [submodule "basics/if-else/lib/forge-std"]
 	path = basics/if-else/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/looping/lib/forge-std"]
+	path = basics/looping/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/mapping/lib/forge-std"]
+	path = basics/mapping/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
