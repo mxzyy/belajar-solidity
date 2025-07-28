@@ -25,3 +25,6 @@
 [submodule "basics/mapping/lib/forge-std"]
 	path = basics/mapping/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/array/lib/forge-std"]
+	path = basics/array/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
