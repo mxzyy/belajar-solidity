@@ -28,3 +28,6 @@
 [submodule "basics/array/lib/forge-std"]
 	path = basics/array/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "enum/lib/forge-std"]
+	path = enum/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
