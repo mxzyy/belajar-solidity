@@ -31,3 +31,9 @@
 [submodule "enum/lib/forge-std"]
 	path = enum/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/user-defined-value/lib/forge-std"]
+	path = basics/user-defined-value/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/structs/lib/forge-std"]
+	path = basics/structs/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
