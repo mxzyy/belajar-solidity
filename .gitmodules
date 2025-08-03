@@ -37,3 +37,18 @@
 [submodule "basics/structs/lib/forge-std"]
 	path = basics/structs/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/data-location/lib/forge-std"]
+	path = basics/data-location/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/data-locations/lib/forge-std"]
+	path = basics/data-locations/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/data-locations/transient-storage/lib/forge-std"]
+	path = basics/data-locations/transient-storage/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/functions/lib/forge-std"]
+	path = basics/functions/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/modifier/lib/forge-std"]
+	path = basics/modifier/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
