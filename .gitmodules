@@ -55,3 +55,6 @@
 [submodule "basics/events/lib/forge-std"]
 	path = basics/events/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/advanced-events/lib/forge-std"]
+	path = basics/advanced-events/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
