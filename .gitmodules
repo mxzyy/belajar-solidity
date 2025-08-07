@@ -61,3 +61,6 @@
 [submodule "basics/constructor/lib/forge-std"]
 	path = basics/constructor/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/inheritance/lib/forge-std"]
+	path = basics/inheritance/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
