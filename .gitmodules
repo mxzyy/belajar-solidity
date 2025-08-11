@@ -67,3 +67,6 @@
 [submodule "basics/shadow-inherit-value/lib/forge-std"]
 	path = basics/shadow-inherit-value/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/call-parent-contract/lib/forge-std"]
+	path = basics/call-parent-contract/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
