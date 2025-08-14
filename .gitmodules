@@ -76,3 +76,6 @@
 [submodule "basics/interface/lib/forge-std"]
 	path = basics/interface/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/payable/lib/forge-std"]
+	path = basics/payable/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
