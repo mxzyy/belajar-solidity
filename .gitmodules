@@ -79,3 +79,9 @@
 [submodule "basics/payable/lib/forge-std"]
 	path = basics/payable/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/sending-eth/lib/forge-std"]
+	path = basics/sending-eth/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "fallback/lib/forge-std"]
+	path = fallback/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
