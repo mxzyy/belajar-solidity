@@ -88,3 +88,6 @@
 [submodule "basics/call/lib/forge-std"]
 	path = basics/call/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/delegate-call/lib/forge-std"]
+	path = basics/delegate-call/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
