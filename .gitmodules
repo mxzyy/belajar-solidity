@@ -100,3 +100,6 @@
 [submodule "basics/contract-factory/lib/forge-std"]
 	path = basics/contract-factory/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/try-catch/lib/forge-std"]
+	path = basics/try-catch/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
