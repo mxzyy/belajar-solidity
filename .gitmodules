@@ -103,3 +103,6 @@
 [submodule "basics/try-catch/lib/forge-std"]
 	path = basics/try-catch/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "basics/import/lib/forge-std"]
+	path = basics/import/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
