@@ -109,3 +109,6 @@
 [submodule "basics/library/lib/forge-std"]
 	path = basics/library/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "foundry-fundamental/simple-storage/lib/forge-std"]
+	path = foundry-fundamental/simple-storage/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
