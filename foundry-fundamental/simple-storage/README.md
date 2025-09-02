@@ -42,19 +42,30 @@ $ forge snapshot
 ### Anvil
 
 ```shell
-$ anvil
+anvil --chain-id 1337
 ```
 
 ### Deploy
 
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+forge script script/SimpleStorage.s.sol --rpc-url http://127.0.0.1:8545 --broadcast --account acc-1 --sender 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
 ```
 
 ### Cast
 
 ```shell
-$ cast <subcommand>
+# Store function call
+cast send 0x5FbDB2315678afecb367f032d93F642f64180aa3 "store(uint256)" 232 \
+  --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
+  --rpc-url http://127.0.0.1:8545
+
+# Retrieve function call
+cast call 0x5FbDB2315678afecb367f032d93F642f64180aa3 "retrieve()" --rpc-url http://127.0.0.1:8545 | cast --to-dec
+
+# addPerson function call
+cast send 0x5FbDB2315678afecb367f032d93F642f64180aa3 "addPerson(string,uint256)" "Alice" 999 \
+  --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
+  --rpc-url http://127.0.0.1:8545
 ```
 
 ### Help
