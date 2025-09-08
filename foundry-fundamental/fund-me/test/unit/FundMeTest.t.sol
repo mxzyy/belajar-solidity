@@ -66,6 +66,41 @@ contract FundMeTest is Test, CodeConstant {
         fundMeContract.fund{value: 1e10}(); // 0.1 ETH
     }
 
+    function testGetAddressToAmountFunded() public {
+        address funder = address(1);
+        vm.prank(funder);
+        vm.deal(funder, 10e18);
+        console.log("Funder balance: ", funder.balance);
+        console.log("Contract balance before fund: ", address(fundMeContract).balance);
+
+        fundMeContract.fund{value: 10e18}();
+
+        console.log("Funder balance after fund: ", funder.balance);
+        console.log("Contract balance: ", address(fundMeContract).balance);
+
+        uint256 amountFunded = fundMeContract.getAddressToAmountFunded(funder);
+        assert(amountFunded == 10e18);
+    }
+
+    function testGetFunder() public {
+        address funder = address(1);
+        vm.prank(funder);
+        vm.deal(funder, 10e18);
+        fundMeContract.fund{value: 10e18}();
+        address getFunder = fundMeContract.getFunder(0);
+
+        console.log("Funder address: ", funder);
+        console.log("Get funder address: ", getFunder);
+
+        assert(getFunder == funder);
+    }
+
+    function testGetOwner() public view {
+        address owner = fundMeContract.getOwner();
+        console.log("Owner: ", owner);
+        assert(owner == address(this));
+    }
+
     function testWithdraw() public {
         address owner = address(0xABCD);
         address funder_1 = address(1);
@@ -97,6 +132,49 @@ contract FundMeTest is Test, CodeConstant {
 
         vm.prank(fundMeContract.getOwner());
         fundMeContract.withdraw();
+
+        console.log("Owner withdrew funds");
+        console.log("Balance of contract after withdraw:", address(fundMeContract).balance);
+        console.log("Owner balance after withdraw:", fundMeContract.getOwner().balance);
+
+        uint256 endingOwnerBalance = fundMeContract.getOwner().balance;
+        uint256 endingFundMeBalance = address(fundMeContract).balance;
+
+        assert(endingFundMeBalance == 0);
+        assert(endingOwnerBalance == startingOwnerBalance + startingFundMeBalance);
+    }
+
+    function testCheaperWithdraw() public {
+        address owner = address(0xABCD);
+        address funder_1 = address(1);
+        address funder_2 = address(2);
+
+        vm.prank(owner);
+        // vm.deal(owner, 1e18);
+        fundMeContract = new FundMe(networkConfig.priceFeed);
+        console.log("Starting balance of contract:", address(fundMeContract).balance);
+
+        vm.prank(funder_1);
+        vm.deal(funder_1, 10e18);
+        fundMeContract.fund{value: 10e18}();
+
+        console.log("Created funder 1 with address:", funder_1);
+        console.log("Funder 1 funded with 10 ETH");
+        console.log("Balance of contract after funder 1:", address(fundMeContract).balance);
+
+        vm.prank(funder_2);
+        vm.deal(funder_2, 10e18);
+        fundMeContract.fund{value: 10e18}();
+
+        console.log("Created funder 2 with address:", funder_2);
+        console.log("Funder 2 funded with 10 ETH");
+        console.log("Balance of contract after funder 2:", address(fundMeContract).balance);
+
+        uint256 startingOwnerBalance = fundMeContract.getOwner().balance;
+        uint256 startingFundMeBalance = address(fundMeContract).balance;
+
+        vm.prank(fundMeContract.getOwner());
+        fundMeContract.cheaperWithdraw();
 
         console.log("Owner withdrew funds");
         console.log("Balance of contract after withdraw:", address(fundMeContract).balance);
