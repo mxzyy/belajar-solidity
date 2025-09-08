@@ -7,6 +7,7 @@ import {HelperConfig} from "./HelperConfig.s.sol";
 
 contract DeployFundMe is Script {
     function deploy() public returns (FundMe, HelperConfig) {
+        FundMe fundMeContract;
         HelperConfig helperConfig = new HelperConfig();
         address priceFeed = helperConfig.getConfigByChainId(block.chainid).priceFeed;
 
@@ -14,10 +15,10 @@ contract DeployFundMe is Script {
         console.log("Using price feed address:", priceFeed);
 
         vm.startBroadcast();
-        fundMe = new FundMe(priceFeed);
+        fundMeContract = new FundMe(priceFeed);
         vm.stopBroadcast();
-        console.log("FundMe deployed at:", address(fundMe));
-        return (fundMe, helperConfig);
+        console.log("FundMe deployed at:", address(fundMeContract));
+        return (fundMeContract, helperConfig);
     }
 
     function run() external returns (FundMe, HelperConfig) {
