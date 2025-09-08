@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 import {Test, console} from "forge-std/Test.sol";
 import {FundMe} from "../../src/FundMe.sol";
 import {HelperConfig, CodeConstant} from "../../script/HelperConfig.s.sol";
+import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
 /// @title FundMeTest
 /// @notice Unit tests for the `FundMe` contract.
@@ -30,6 +31,12 @@ contract FundMeTest is Test, CodeConstant {
         fundMeContract = new FundMe(networkConfig.priceFeed);
     }
 
+    /// @notice Check the current Chain ID and log it.
+    /// @dev Diagnostic utility; does not perform assertions.
+    function testCurrentChainId() public view {
+        console.log("Current Chain ID: ", block.chainid);
+    }
+
     /// @notice Verifies that `FundMe` stores the expected price feed address for the current chain.
     /// @dev Read-only assertion; diagnostic logs are printed for visibility.
     function testPriceFeedAddressIsCorrect() public view {
@@ -37,6 +44,26 @@ contract FundMeTest is Test, CodeConstant {
         console.log("Price Feed: ", priceFeed);
         console.log("Network Price Feed: ", networkConfig.priceFeed);
         assert(priceFeed == networkConfig.priceFeed);
+    }
+
+    /// @notice Reads the current ETH/USD price from the price feed used by FundMe.
+    /// @dev Prints both the raw answer (with decimals) and the normalized USD price.
+    function testGetCurrentEthPrice() public view {
+        // grab the priceFeed address from FundMe
+        address priceFeedAddr = address(fundMeContract.getPriceFeed());
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(priceFeedAddr);
+
+        // fetch latestRoundData
+        (, int256 answer,,,) = priceFeed.latestRoundData();
+        uint8 decimals = priceFeed.decimals();
+
+        // normalize answer to plain USD value
+        uint256 ethPriceUsd = uint256(answer) / (10 ** decimals);
+
+        console.log("Price feed address:", priceFeedAddr);
+        console.log("Decimals:", decimals);
+        console.log("Raw answer:", uint256(answer));
+        console.log("ETH/USD price:", ethPriceUsd, "USD");
     }
 
     /// @notice Verifies that the price feed version exposed by `FundMe` equals 4.
