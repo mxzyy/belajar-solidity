@@ -23,6 +23,15 @@ contract FundMeTest is Test, CodeConstant {
     /// @dev Retrieved from {HelperConfig.getConfigByChainId}.
     HelperConfig.NetworkConfig public networkConfig;
 
+    /// @notice Fallback function to prevent accidental ETH transfers to the test contract.
+    /// @dev Reverts any ETH sent to the test contract outside of explicit funding calls.
+    receive() external payable {
+        revert("test contract refuses ETH");
+    }
+
+    // --- Custom Errors ---
+    error fundMe__NotOwner();
+
     /// @notice Test fixture setup: resolves network configuration and deploys `FundMe`.
     /// @dev Called automatically by Foundry before each test case.
     function setUp() external {
@@ -228,5 +237,70 @@ contract FundMeTest is Test, CodeConstant {
 
         assert(endingFundMeBalance == 0);
         assert(endingOwnerBalance == startingOwnerBalance + startingFundMeBalance);
+    }
+
+    function testWithdraw_Revert_WhenNotOwner() public {
+        // setUp() sudah bikin owner = address(this)
+        vm.expectRevert(fundMe__NotOwner.selector);
+        vm.prank(address(1));
+        fundMeContract.withdraw();
+    }
+
+    function testCheaperWithdraw_Revert_WhenNotOwner() public {
+        vm.expectRevert(fundMe__NotOwner.selector);
+        vm.prank(address(1));
+        fundMeContract.cheaperWithdraw();
+    }
+
+    // Jalur require(success) gagal karena owner = address(this) (punya receive() yang revert)
+    function testWithdraw_Revert_WhenSendToOwnerFails() public {
+        // Biayai kontrak supaya ada saldo yang mau dikirim ke owner
+        address funder = address(11);
+        vm.deal(funder, 1 ether);
+        vm.prank(funder);
+        fundMeContract.fund{value: 1 ether}();
+
+        vm.prank(fundMeContract.getOwner()); // owner = address(this)
+        vm.expectRevert(); // require(success)
+        fundMeContract.withdraw();
+    }
+
+    function testCheaperWithdraw_Revert_WhenSendToOwnerFails() public {
+        address funder = address(12);
+        vm.deal(funder, 1 ether);
+        vm.prank(funder);
+        fundMeContract.fund{value: 1 ether}();
+
+        vm.prank(fundMeContract.getOwner()); // owner = address(this)
+        vm.expectRevert(); // require(success)
+        fundMeContract.cheaperWithdraw();
+    }
+
+    // Uji “zero-iteration loop” (tanpa funder) untuk masuk cabang loop=false
+    function testWithdraw_NoFunders_ZeroIterationLoop_Succeeds() public {
+        // Redeploy dengan owner EOA "normal" agar call ke owner sukses
+        address owner = address(0xABCD);
+        vm.prank(owner);
+        fundMeContract = new FundMe(networkConfig.priceFeed);
+
+        uint256 startOwnerBal = owner.balance;
+        vm.prank(owner);
+        fundMeContract.withdraw();
+
+        assertEq(address(fundMeContract).balance, 0);
+        assertEq(owner.balance, startOwnerBal); // kontrak 0 saldo, owner unchanged
+    }
+
+    function testCheaperWithdraw_NoFunders_ZeroIterationLoop_Succeeds() public {
+        address owner = address(0xABCD);
+        vm.prank(owner);
+        fundMeContract = new FundMe(networkConfig.priceFeed);
+
+        uint256 startOwnerBal = owner.balance;
+        vm.prank(owner);
+        fundMeContract.cheaperWithdraw();
+
+        assertEq(address(fundMeContract).balance, 0);
+        assertEq(owner.balance, startOwnerBal);
     }
 }
