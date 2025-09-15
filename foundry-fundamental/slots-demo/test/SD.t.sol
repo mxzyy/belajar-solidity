@@ -1,24 +1,20 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
 
-import {Test, console} from "forge-std/Test.sol";
-import {Counter} from "../src/Counter.sol";
+import "forge-std/Test.sol";
+import "../src/SD.sol";
 
-contract CounterTest is Test {
-    Counter public counter;
+contract SlotsDebugTest is Test {
+    SlotsDebug d;
+    address A = address(0xBEEF);
 
     function setUp() public {
-        counter = new Counter();
-        counter.setNumber(0);
+        d = new SlotsDebug();
+        d.seed(A);
     }
 
-    function test_Increment() public {
-        counter.increment();
-        assertEq(counter.number(), 1);
-    }
-
-    function testFuzz_SetNumber(uint256 x) public {
-        counter.setNumber(x);
-        assertEq(counter.number(), x);
+    function testDebugAll() public view {
+        // Ini akan nge-print semua info (p, alasan, keccak head/base, dan nilai)
+        d.debugAll(A);
     }
 }
