@@ -27,7 +27,7 @@ contract InteractionTests is ZkSyncChainChecker, StdCheats, Test {
             (fundme, helperConfig) = deployer.run();
         } else {
             helperConfig = new HelperConfig();
-            fundMe = new FundMe(helperConfig.getConfigByChainId(block.chainid).priceFeed);
+            fundme = new FundMe(helperConfig.getConfigByChainId(block.chainid).priceFeed);
         }
 
         vm.deal(USER, STARTING_USER_BALANCE);
@@ -39,10 +39,10 @@ contract InteractionTests is ZkSyncChainChecker, StdCheats, Test {
         uint256 originalFundMeBalance = address(fundme).balance;
 
         vm.prank(USER);
-        fundMe.fund{value: SEND_VALUE}();
+        fundme.fund{value: SEND_VALUE}();
 
-        FundMe_Withdraw_InteractionContract withdrawer = new FundMe_Withdraw_InteractionContract(address(fundme));
-        withdrawer.FundMe_Withdraw_InteractionContract(address(fundMe)); // why not owner
+        FundMe_Withdraw_InteractionContract withdrawer = new FundMe_Withdraw_InteractionContract();
+        withdrawer.FundMe_Withdraw_Interaction(address(fundme)); // why not owner
 
         uint256 afterUserBalance = address(USER).balance;
         uint256 afterOwnerBalance = address(fundme.getOwner()).balance;
