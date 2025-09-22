@@ -2,56 +2,63 @@
 pragma solidity ^0.8.21;
 
 import {Test, console} from "forge-std/Test.sol";
-import {FundMe_Fund_InteractionContract, FundMe_Withdraw_InteractionContract} from "../../script/Interaction.s.sol";
+import {DeployFundMe} from "../../script/DeployFundMe.s.sol";
 import {FundMe} from "../../src/FundMe.sol";
 import {HelperConfig} from "../../script/HelperConfig.s.sol";
-import {StdCheats} from "forge-std/StdCheats.sol";
-import {ZkSyncChainChecker} from "lib/foundry-devops/src/ZkSyncChainChecker.sol";
-import {DeployFundMe} from "../../script/DeployFundMe.s.sol";
 
-contract InteractionTests is ZkSyncChainChecker, StdCheats, Test {
+/// @title Integration_FundMe
+/// @notice End-to-end integration tests for FundMe
+/// @dev We deploy with an explicit EOA owner to ensure withdrawals do not revert.
+contract Integration_FundMe is Test {
     FundMe public fundme;
     HelperConfig public helperConfig;
 
-    // @notice constants
+    /// @notice EOA that will be the FundMe owner (constructor sender)
+    address public OWNER = makeAddr("owner");
+
+    /// @notice Test user account that will fund
+    address public USER = makeAddr("user");
+
     uint256 public constant SEND_VALUE = 0.1 ether;
     uint256 public constant STARTING_USER_BALANCE = 10 ether;
-    address public constant GAS_PRICE = address(1);
 
-    address public USER = address(1);
-
-    function setUp() external skipZkSync {
-        if (!isZkSyncChain()) {
-            // different deploy script for non-zksync chains
-            DeployFundMe deployer = new DeployFundMe();
-            (fundme, helperConfig) = deployer.run();
-        } else {
-            helperConfig = new HelperConfig();
-            fundme = new FundMe(helperConfig.getConfigByChainId(block.chainid).priceFeed);
-        }
-
+    /// @notice Deploy FundMe with OWNER as EOA and seed balances
+    function setUp() public {
+        // Ensure OWNER & USER are funded for realism (OWNER may not need funds with tx.gasprice=0)
+        vm.deal(OWNER, 1 ether);
         vm.deal(USER, STARTING_USER_BALANCE);
+        vm.txGasPrice(0); // exact balance equality in asserts
+
+        DeployFundMe d = new DeployFundMe();
+        (fundme, helperConfig) = d.deploy(false, OWNER); // no broadcast; constructor sender = OWNER (EOA)
+        assertEq(fundme.getOwner(), OWNER, "owner must be EOA");
     }
 
-    function testUserCanFundAndWithdraw() public skipZkSync {
-        uint256 preUserBalance = address(USER).balance;
-        uint256 preOwnerBalance = address(fundme.getOwner()).balance;
-        uint256 originalFundMeBalance = address(fundme).balance;
-
-        console.log("Owner :", address(fundme.getOwner()));
-        console.log("FundMe :", address(fundme));
+    /// @notice User funds; owner withdraws; contract drained; balances updated
+    function test_UserCanFund_ThenOwnerWithdraw() public {
+        uint256 preUser = USER.balance;
+        uint256 preOwner = OWNER.balance;
+        uint256 preContract = address(fundme).balance;
 
         vm.prank(USER);
         fundme.fund{value: SEND_VALUE}();
 
-        FundMe_Withdraw_InteractionContract withdrawer = new FundMe_Withdraw_InteractionContract();
-        withdrawer.FundMe_Withdraw_Interaction(address(fundme)); // fundme CA
+        // Withdraw by the EOA owner
+        vm.prank(OWNER);
+        fundme.withdraw();
 
-        uint256 afterUserBalance = address(USER).balance;
-        uint256 afterOwnerBalance = address(fundme.getOwner()).balance;
+        assertEq(address(fundme).balance, 0, "contract not drained");
+        assertEq(USER.balance, preUser - SEND_VALUE, "user balance mismatch");
+        assertEq(OWNER.balance, preOwner + preContract + SEND_VALUE, "owner balance mismatch");
+    }
 
-        assert(address(fundme).balance == 0);
-        assertEq(afterUserBalance + SEND_VALUE, preUserBalance);
-        assertEq(preOwnerBalance + SEND_VALUE + originalFundMeBalance, afterOwnerBalance);
+    /// @notice Non-owner cannot withdraw
+    function test_NonOwner_CannotWithdraw() public {
+        vm.prank(USER);
+        fundme.fund{value: SEND_VALUE}();
+
+        vm.prank(USER);
+        vm.expectRevert(); // replace with specific selector if FundMe uses custom error
+        fundme.withdraw();
     }
 }
