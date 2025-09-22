@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.21;
 
 import {Test, console} from "forge-std/Test.sol";
 import {FundMe_Fund_InteractionContract, FundMe_Withdraw_InteractionContract} from "../../script/Interaction.s.sol";
@@ -16,7 +16,7 @@ contract InteractionTests is ZkSyncChainChecker, StdCheats, Test {
     // @notice constants
     uint256 public constant SEND_VALUE = 0.1 ether;
     uint256 public constant STARTING_USER_BALANCE = 10 ether;
-    address public constant GAS_PRICE = 1;
+    address public constant GAS_PRICE = address(1);
 
     address public USER = address(1);
 
@@ -49,6 +49,6 @@ contract InteractionTests is ZkSyncChainChecker, StdCheats, Test {
 
         assert(address(fundme).balance == 0);
         assertEq(afterUserBalance + SEND_VALUE, preUserBalance);
-        assertEq(afterOwnerBalance + SEND_VALUE + originalFundMeBalance, preOwnerBalance);
+        assertEq(preOwnerBalance + SEND_VALUE + originalFundMeBalance, afterOwnerBalance);
     }
 }
