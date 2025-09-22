@@ -22,7 +22,7 @@ contract InteractionTests is ZkSyncChainChecker, StdCheats, Test {
 
     function setUp() external skipZkSync {
         if (!isZkSyncChain()) {
-            // why only zk
+            // different deploy script for non-zksync chains
             DeployFundMe deployer = new DeployFundMe();
             (fundme, helperConfig) = deployer.run();
         } else {
@@ -38,11 +38,14 @@ contract InteractionTests is ZkSyncChainChecker, StdCheats, Test {
         uint256 preOwnerBalance = address(fundme.getOwner()).balance;
         uint256 originalFundMeBalance = address(fundme).balance;
 
+        console.log("Owner :", address(fundme.getOwner()));
+        console.log("FundMe :", address(fundme));
+
         vm.prank(USER);
         fundme.fund{value: SEND_VALUE}();
 
         FundMe_Withdraw_InteractionContract withdrawer = new FundMe_Withdraw_InteractionContract();
-        withdrawer.FundMe_Withdraw_Interaction(address(fundme)); // why not owner
+        withdrawer.FundMe_Withdraw_Interaction(address(fundme)); // fundme CA
 
         uint256 afterUserBalance = address(USER).balance;
         uint256 afterOwnerBalance = address(fundme.getOwner()).balance;
