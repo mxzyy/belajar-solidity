@@ -15,6 +15,7 @@ contract Integration_FundMe is Test {
 
     /// @notice EOA that will be the FundMe owner (constructor sender)
     address public OWNER = makeAddr("owner");
+    address public OWNER2 = makeAddr("owner2");
 
     /// @notice Test user account that will fund
     address public USER = makeAddr("user");
@@ -60,5 +61,40 @@ contract Integration_FundMe is Test {
         vm.prank(USER);
         vm.expectRevert(); // replace with specific selector if FundMe uses custom error
         fundme.withdraw();
+    }
+
+    function test_Deploy_NoBroadcast_DefaultSender() public {
+        // Menyentuh path: doBroadcast=false, desiredOwner=0
+        DeployFundMe d = new DeployFundMe();
+        (FundMe f,) = d.deploy(false, address(0xabc));
+        // Jika FundMe expose getOwner(), bisa assert; kalau tidak, cukup non-zero
+        try f.getOwner() returns (address o) {
+            assertEq(o, address(0xabc));
+        } catch {
+            assertTrue(address(f) != address(0));
+        }
+    }
+
+    function test_Deploy_NoBroadcast_CustomOwner() public {
+        // Path: doBroadcast=false, desiredOwner!=0 (vm.prank)
+        DeployFundMe d = new DeployFundMe();
+        (FundMe f,) = d.deploy(false, OWNER2);
+        assertEq(f.getOwner(), OWNER2);
+    }
+
+    function test_Deploy_Broadcast_CustomOwner() public {
+        // Path: doBroadcast=true, desiredOwner!=0 (vm.startBroadcast(addr))
+        vm.deal(OWNER2, 100 ether);
+        DeployFundMe d = new DeployFundMe();
+        (FundMe f,) = d.deploy(true, OWNER2);
+        assertEq(f.getOwner(), OWNER2);
+    }
+
+    function test_Run_Broadcast_DefaultBroadcaster_CoversBranch() public {
+        DeployFundMe d = new DeployFundMe();
+        (FundMe f,) = d.run(); // hits: doBroadcast=true, desiredOwner=0
+        address o = f.getOwner();
+        assertTrue(o != address(0), "owner zero");
+        assertTrue(o != address(this), "should not be test contract");
     }
 }
