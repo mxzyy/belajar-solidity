@@ -124,3 +124,9 @@
 [submodule "foundry-fundamental/fund-me/lib/foundry-devops"]
 	path = foundry-fundamental/fund-me/lib/foundry-devops
 	url = https://github.com/Cyfrin/foundry-devops
+[submodule "foundry-fundamental/lottery/lib/forge-std"]
+	path = foundry-fundamental/lottery/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "foundry-fundamental/lottery/lib/chainlink-brownie-contracts"]
+	path = foundry-fundamental/lottery/lib/chainlink-brownie-contracts
+	url = https://github.com/smartcontractkit/chainlink-brownie-contracts
