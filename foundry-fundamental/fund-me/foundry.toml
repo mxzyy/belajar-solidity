@@ -7,7 +7,12 @@ remappings = [
 "chainlink-brownie-contracts/=lib/chainlink-brownie-contracts/",
 "forge-std/=lib/forge-std/src/",
 "foundry-devops/=lib/foundry-devops/src/"
+]
 
+fs_permissions = [
+  { access = "read",  path = "./broadcast" },
+  { access = "write", path = "./broadcast" },
+  { access = "read",  path = "./reports" }
 ]
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
