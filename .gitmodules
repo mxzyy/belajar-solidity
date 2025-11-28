@@ -130,3 +130,9 @@
 [submodule "foundry-fundamental/lottery/lib/chainlink-brownie-contracts"]
 	path = foundry-fundamental/lottery/lib/chainlink-brownie-contracts
 	url = https://github.com/smartcontractkit/chainlink-brownie-contracts
+[submodule "foundry-fundamental/lottery/lib/solmate"]
+	path = foundry-fundamental/lottery/lib/solmate
+	url = https://github.com/transmissions11/solmate
+[submodule "foundry-fundamental/lottery/lib/foundry-devops"]
+	path = foundry-fundamental/lottery/lib/foundry-devops
+	url = https://github.com/Cyfrin/foundry-devops
