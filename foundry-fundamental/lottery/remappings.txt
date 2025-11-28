@@ -1,0 +1,6 @@
+@chainlink/=lib/chainlink-brownie-contracts/
+forge-std/=lib/forge-std/src/
+chainlink-brownie-contracts/=lib/chainlink-brownie-contracts/
+ds-test/=lib/solmate/lib/ds-test/src/
+foundry-devops/=lib/foundry-devops/
+@solmate/=lib/solmate/src/
