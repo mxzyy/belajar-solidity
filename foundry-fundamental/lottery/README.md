@@ -63,7 +63,9 @@ $ forge script script/DeployRaffle.s.sol --rpc-url http://127.0.0.1:8545 --broad
 ### Cast
 
 ```shell
-$ 
+$ bash sendRealTx.sh # Automate 3 EOA Account to test Raffle Contract
+
+$ bash sendDummyTX.sh # idk why
 ```
 
 ### Help
