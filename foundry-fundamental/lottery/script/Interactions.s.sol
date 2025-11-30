@@ -73,10 +73,11 @@ contract FundSubscription is codeConstants, Script {
         console.log("Funding subscription: ", subId);
         console.log("Using vrfCoordinator: ", vrfCoordinatorV2_5);
         console.log("On ChainID: ", block.chainid);
+        console.log("Account: ", account);
         bool local = FundLogic.isLocal(block.chainid, LOCAL_CHAIN_ID);
         if (local) {
             vm.startBroadcast(account);
-            VRFCoordinatorV2_5Mock(vrfCoordinatorV2_5).fundSubscription(subId, 0);
+            VRFCoordinatorV2_5Mock(vrfCoordinatorV2_5).fundSubscription(subId, 100 ether);
             vm.stopBroadcast();
         } else {
             console.log(LinkToken(link).balanceOf(msg.sender));

@@ -1,6 +1,10 @@
-## Foundry
+## Raffe Contract Foundry
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+**Raffle Contrat implemented from Cyfrin Updraft Foundry Fundamentals Final Section**
+
+A raffle (or lottery) is a scheme where all participants contribute money to a single prize pool, and a random winner is selected to receive the entire pool. 
+
+It is implemented as an Ethereum smart contract and uses Chainlink VRF and Chainlink Automation to automate the raffle.
 
 Foundry consists of:
 
@@ -11,7 +15,10 @@ Foundry consists of:
 
 ## Documentation
 
-https://book.getfoundry.sh/
+* https://book.getfoundry.sh/
+* https://docs.chain.link/vrf
+* https://docs.chain.link/chainlink-automation
+
 
 ## Usage
 
@@ -45,16 +52,18 @@ $ forge snapshot
 $ anvil
 ```
 
-### Deploy
+### Deploy (Local)
+
+NOTE: Pastiin SubsAPI di VRF Mocks menggunakan blockhash(block.number)
 
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+$ forge script script/DeployRaffle.s.sol --rpc-url http://127.0.0.1:8545 --broadcast --account acc-1 --sender 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
 ```
 
 ### Cast
 
 ```shell
-$ cast <subcommand>
+$ 
 ```
 
 ### Help

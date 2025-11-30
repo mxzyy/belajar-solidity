@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 import {Script} from "forge-std/Script.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
 import {Raffle} from "../src/Raffle.sol";
-import {CreateSubscription, AddConsumer, FundSubscription} from "./Interactions.s.sol";
+import {AddConsumer, FundSubscription} from "./Interactions.s.sol";
 import {RaffleDeployerLib} from "../src/RaffleDeployerLib.sol";
 
 /**
@@ -19,6 +19,7 @@ contract DeployRaffle is Script {
         AddConsumer addConsumer = new AddConsumer();
         HelperConfig.NetworkConfig memory config = helperConfig.getConfig();
         config = RaffleDeployerLib.prepareConfig(config);
+        FundSubscription fundSubscription = new FundSubscription();
         uint256 subscriptionId = config.subscriptionId;
         bytes32 gasLane = config.gasLane;
         uint256 interval = config.automationUpdateInterval;
@@ -34,6 +35,7 @@ contract DeployRaffle is Script {
         addConsumer.addConsumer(
             address(raffleContract), config.vrfCoordinatorV2_5, config.subscriptionId, config.account
         );
+        fundSubscription.fundSubscription(config.vrfCoordinatorV2_5, config.subscriptionId, config.link, config.account);
         return (raffleContract, helperConfig);
     }
 }
