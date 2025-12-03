@@ -139,3 +139,12 @@
 [submodule "foundry-fundamental/erc-20/lib/forge-std"]
 	path = foundry-fundamental/erc-20/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "foundry-fundamental/erc-721/lib/forge-std"]
+	path = foundry-fundamental/erc-721/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "foundry-fundamental/erc-721/lib/openzeppelin-contracts"]
+	path = foundry-fundamental/erc-721/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "foundry-fundamental/erc-721/lib/foundry-devops"]
+	path = foundry-fundamental/erc-721/lib/foundry-devops
+	url = https://github.com/Cyfrin/foundry-devops
