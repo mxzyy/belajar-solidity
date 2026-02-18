@@ -1,66 +1,91 @@
-## Foundry
+# HelloWorld Smart Contract
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A simple smart contract written in Solidity using the Foundry framework. This project serves as a basic introduction to Ethereum smart contract development.
 
-Foundry consists of:
+## About
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+HelloWorld is a minimal smart contract that stores a public string variable `greet` containing "Hello World!". The project includes:
 
-## Documentation
+- **Smart Contract** - Main contract in `src/HelloWorld.sol`
+- **Unit Tests** - Test suite in `test/HelloWorld.t.sol`
+- **Deployment Script** - Deployment automation in `script/Deploy.s.sol`
 
-https://book.getfoundry.sh/
+## Tech Stack
+
+- **Solidity** `^0.8.26`
+- **Foundry** (Forge, Anvil, Cast)
+
+## Project Structure
+
+```
+hello-world/
+├── src/
+│   └── HelloWorld.sol      # Main contract
+├── script/
+│   └── Deploy.s.sol        # Deployment script
+├── test/
+│   └── HelloWorld.t.sol    # Unit tests
+├── lib/
+│   └── forge-std/          # Foundry standard library
+└── foundry.toml            # Foundry configuration
+```
+
+## Prerequisites
+
+Install Foundry:
+
+```bash
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+```
 
 ## Usage
 
-### Anvil 
-
-```shell
-$ anvil --chain-id 1337
-```
-
 ### Build
 
-```shell
-$ forge build
+```bash
+forge build
 ```
 
 ### Test
 
-```shell
-$ forge test
+```bash
+forge test
 ```
 
-### Format
+### Run Local Blockchain
 
-```shell
-$ forge fmt
+```bash
+anvil --chain-id 1337
 ```
 
-### Gas Snapshots
+### Deploy to Anvil
 
-```shell
-$ forge snapshot
+```bash
+forge script script/Deploy.s.sol --rpc-url http://127.0.0.1:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --broadcast
 ```
 
-### Deploy
+### Call Contract
 
-```shell
-$ forge script script/Deploy.s.sol --rpc-url http://127.0.0.1:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --broadcast
+```bash
+cast call 0x5FbDB2315678afecb367f032d93F642f64180aa3 "greet()" --rpc-url http://127.0.0.1:8545 | cast --to-ascii
 ```
 
-### Cast Hello World
+## Command Reference
 
-```shell
-$ cast call 0x5FbDB2315678afecb367f032d93F642f64180aa3  "greet()" --rpc-url http://127.0.0.1:8545 | cast --to-ascii
-```
+| Command | Description |
+|---------|-------------|
+| `forge build` | Compile contracts |
+| `forge test` | Run unit tests |
+| `forge fmt` | Format Solidity code |
+| `anvil --chain-id 1337` | Start local blockchain |
+| `forge script script/Deploy.s.sol --rpc-url <RPC> --private-key <KEY> --broadcast` | Deploy contract |
 
-### Help
+## Documentation
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+- [Foundry Book](https://book.getfoundry.sh/)
+- [Solidity Docs](https://docs.soliditylang.org/)
+
+## License
+
+MIT
