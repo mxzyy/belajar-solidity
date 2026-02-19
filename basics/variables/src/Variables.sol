@@ -2,41 +2,116 @@
 pragma solidity ^0.8.26;
 
 contract Variables {
-    // State variables are stored on the blockchain.
+    // =========================================================
+    // STATE VARIABLES - stored permanently on the blockchain
+    // =========================================================
+
+    // String - text data
     string public text = "Hello";
-    uint256 public num = 123;
 
-    // function doSomething() public view {
-    //     // Local variables are not saved to the blockchain.
-    //     uint256 i = 456;
+    // Unsigned integers - only positive numbers
+    uint8 public smallNum = 255;        // max: 2^8 - 1
+    uint256 public num = 123;           // max: 2^256 - 1 (uint = uint256)
 
-    //     // Here are some global variables
-    //     uint256 timestamp = block.timestamp; // Current block timestamp
-    //     address sender = msg.sender; // address of the caller
-    // }
+    // Signed integers - can be negative
+    int8 public smallSignedNum = -128;  // range: -128 to 127
+    int256 public signedNum = -100;     // range: -(2^255) to 2^255 - 1
 
-    function getTimeStamp() public view returns (uint256) {
-        uint256 timestamp = block.timestamp;
-        return timestamp;
+    // Boolean - true or false
+    bool public flag = true;
+
+    // Address - stores an Ethereum wallet or contract address
+    address public owner;
+
+    // Bytes - fixed-size raw byte data
+    bytes32 public data = "solidity";   // fixed size, gas efficient
+    bytes public dynamicData = "hello"; // dynamic size
+
+    // =========================================================
+    // CONSTRUCTOR - runs once when contract is deployed
+    // =========================================================
+
+    constructor() {
+        // msg.sender here refers to the deployer's address
+        owner = msg.sender;
     }
 
-    function getNow() public view returns (uint256) {
-        return block.timestamp;
+    // =========================================================
+    // LOCAL VARIABLES - exist only inside a function, not stored on blockchain
+    // =========================================================
+
+    function demoLocalVariables() public pure returns (uint256) {
+        uint256 localNum = 456;  // local variable, disappears after function ends
+        bool localFlag = false;
+        int256 localSigned = -999;
+
+        // Just to use the variables (avoid compiler warnings)
+        if (localFlag) {
+            localSigned = 0;
+        }
+
+        return localNum;
     }
 
-    function setSomethingNum(uint256 x) public {
-        num = x;
+    // =========================================================
+    // GLOBAL VARIABLES - provided by the EVM, reflect blockchain state
+    // =========================================================
+
+    // Block-related globals
+    function getBlockTimestamp() public view returns (uint256) {
+        return block.timestamp;  // current block time in unix seconds
     }
 
-    function setSomethingText(string memory y) public {
+    function getBlockNumber() public view returns (uint256) {
+        return block.number;  // current block height
+    }
+
+    function getBlockChainId() public view returns (uint256) {
+        return block.chainid;  // 1 = mainnet, 11155111 = sepolia, etc.
+    }
+
+    // Transaction / message globals
+    function getMsgSender() public view returns (address) {
+        return msg.sender;  // address that called this function
+    }
+
+    function getMsgValue() public payable returns (uint256) {
+        return msg.value;  // amount of ETH sent (in wei)
+    }
+
+    function getGasPrice() public view returns (uint256) {
+        return tx.gasprice;  // gas price of the current transaction
+    }
+
+    function getGasLeft() public view returns (uint256) {
+        return gasleft();  // remaining gas in this call
+    }
+
+    // =========================================================
+    // SETTERS & GETTERS for state variables
+    // =========================================================
+
+    function setText(string memory y) public {
         text = y;
     }
 
-    function getNum() public view returns(uint256) {
+    function setNum(uint256 x) public {
+        num = x;
+    }
+
+    function setFlag(bool b) public {
+        flag = b;
+    }
+
+    function getText() public view returns (string memory) {
+        return text;
+    }
+
+    function getNum() public view returns (uint256) {
         return num;
     }
 
-    function getStr() public view returns(string memory) {
-        return text;
+    function getFlag() public view returns (bool) {
+        return flag;
     }
 }
