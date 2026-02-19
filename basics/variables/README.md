@@ -1,73 +1,112 @@
-## Foundry
+# Variables Smart Contract
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A simple smart contract written in Solidity using the Foundry framework. This project demonstrates how to use state variables, local variables, and global variables in Solidity.
 
-Foundry consists of:
+## About
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+Variables is a minimal smart contract that stores public state variables (`text` and `num`) and exposes functions to read and modify them. It also demonstrates the use of global variables like `block.timestamp`. The project includes:
 
-## Documentation
+- **Smart Contract** - Main contract in `src/Variables.sol`
+- **Unit Tests** - Test suite in `test/Variables.t.sol`
+- **Deployment Script** - Deployment automation in `script/Deploy.s.sol`
 
-https://book.getfoundry.sh/
+## Tech Stack
+
+- **Solidity** `^0.8.26`
+- **Foundry** (Forge, Anvil, Cast)
+
+## Project Structure
+
+```
+variables/
+├── src/
+│   └── Variables.sol      # Main contract
+├── script/
+│   └── Deploy.s.sol       # Deployment script
+├── test/
+│   └── Variables.t.sol    # Unit tests
+├── lib/
+│   └── forge-std/         # Foundry standard library
+└── foundry.toml           # Foundry configuration
+```
+
+## Contract Functions
+
+| Function | Type | Description |
+|----------|------|-------------|
+| `getStr()` | `view` | Returns the current text value |
+| `getNum()` | `view` | Returns the current num value |
+| `setSomethingText(string)` | write | Sets the text state variable |
+| `setSomethingNum(uint256)` | write | Sets the num state variable |
+| `getTimeStamp()` | `view` | Returns the current block timestamp |
+| `getNow()` | `view` | Returns the current block timestamp |
+
+## Prerequisites
+
+Install Foundry:
+
+```bash
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+```
 
 ## Usage
 
-### Anvil
-
-```shell
-$ anvil --chain-id 1337
-```
-
 ### Build
 
-```shell
-$ forge build
+```bash
+forge build
 ```
 
 ### Test
 
-```shell
-$ forge test
+```bash
+forge test
 ```
 
-### Format
+### Run Local Blockchain
 
-```shell
-$ forge fmt
+```bash
+anvil --chain-id 1337
 ```
 
-### Gas Snapshots
+### Deploy to Anvil
 
-```shell
-$ forge snapshot
+```bash
+forge script script/Deploy.s.sol --rpc-url http://127.0.0.1:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --broadcast
 ```
 
+### Call Contract
 
-### Deploy
+```bash
+# Get current text
+cast call <CONTRACT_ADDRESS> "getStr()" --rpc-url http://127.0.0.1:8545 | cast --to-ascii
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+# Set text
+cast send <CONTRACT_ADDRESS> "setSomethingText(string)" "walawe" --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --rpc-url http://127.0.0.1:8545
+
+# Get current num
+cast call <CONTRACT_ADDRESS> "getNum()" --rpc-url http://127.0.0.1:8545 | cast --to-dec
+
+# Set num
+cast send <CONTRACT_ADDRESS> "setSomethingNum(uint256)" 32390209 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --rpc-url http://127.0.0.1:8545
 ```
 
-### Cast
+## Command Reference
 
-```shell
-$ cast call 0x5FbDB2315678afecb367f032d93F642f64180aa3  "getStr()" --rpc-url http://127.0.0.1:8545 | cast --to-ascii
+| Command | Description |
+|---------|-------------|
+| `forge build` | Compile contracts |
+| `forge test` | Run unit tests |
+| `forge fmt` | Format Solidity code |
+| `anvil --chain-id 1337` | Start local blockchain |
+| `forge script script/Deploy.s.sol --rpc-url <RPC> --private-key <KEY> --broadcast` | Deploy contract |
 
-$ cast send 0x5FbDB2315678afecb367f032d93F642f64180aa3 "setSomethingText(string)" "walawe"   --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80   --rpc-url http://127.0.0.1:8545
+## Documentation
 
-$ cast call 0x5FbDB2315678afecb367f032d93F642f64180aa3  "getNum()" --rpc-url http://127.0.0.1:8545 | cast --to-dec
+- [Foundry Book](https://book.getfoundry.sh/)
+- [Solidity Docs](https://docs.soliditylang.org/)
 
-$ cast send 0x5FbDB2315678afecb367f032d93F642f64180aa3 "setSomethingNum(uint256)" 32390209   --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80   --rpc-url http://127.0.0.1:8545
-```
+## License
 
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+MIT
